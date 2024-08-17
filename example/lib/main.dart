@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -18,7 +19,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   RNNoise rnNoise = RNNoise();
 
-  List<Uint8List> audio = [];
+  List<Uint8List> rnnoiseAudio = [];
+  List<Uint8List> sourceAudio = [];
 
   @override
   void initState() {
@@ -46,15 +48,20 @@ class _MyAppState extends State<MyApp> {
                   TextButton(
                       onPressed: () async {
                         rnNoise.create();
-                        audio.clear();
+                        rnnoiseAudio.clear();
+                        sourceAudio.clear();
                         await PCMPlayer.stop();
+                        if (Platform.isIOS) {
+                          await AudioManager.setPlayAndRecordSession(
+                              defaultToSpeaker: true);
+                        }
                         PCMRecorder.start(
                             sampleRateInHz: 48000,
                             onData: (data) {
                               if (data != null) {
                                 Uint8List newData = rnNoise.process(data);
-                                //audio.add(data);
-                                audio.add(newData);
+                                sourceAudio.add(data);
+                                rnnoiseAudio.add(newData);
                               }
                             },
                             audioSource: AudioSource.MIC,
@@ -63,12 +70,21 @@ class _MyAppState extends State<MyApp> {
                       child: Text("开始录音")),
                   TextButton(
                       onPressed: () async {
+                        print("结束录音");
                         await PCMRecorder.stop();
                         Future.delayed(Duration(milliseconds: 100));
+                        await AudioManager.abandonAudioFocus();
                         rnNoise.release();
-                        audio.forEach((data) {
+                        print("播放录音");
+                        sourceAudio.forEach((data) {
                           PCMPlayer.play(data, sampleRateInHz: 48000);
                         });
+
+                        rnnoiseAudio.forEach((data) {
+                          PCMPlayer.play(data, sampleRateInHz: 48000);
+                        });
+                        sourceAudio.clear();
+                        rnnoiseAudio.clear();
                       },
                       child: Text("结束录音"))
                 ],

@@ -1,22 +1,28 @@
 PODS:
   - Flutter (1.0.0)
+  - pcm (0.0.1):
+    - Flutter
   - rnnoise (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - pcm (from `.symlinks/plugins/pcm/ios`)
   - rnnoise (from `.symlinks/plugins/rnnoise/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  pcm:
+    :path: ".symlinks/plugins/pcm/ios"
   rnnoise:
     :path: ".symlinks/plugins/rnnoise/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  pcm: c7f785e74401c051ffc82ae1a7d9c379ab117482
   rnnoise: ac6b003848415f862d7f0ea01f96a1added91e36
 
-PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+PODFILE CHECKSUM: 4e8f8b2be68aeea4c0d5beb6ff1e79fface1d048
 
 COCOAPODS: 1.15.2

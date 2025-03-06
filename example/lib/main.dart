@@ -15,8 +15,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   RNNoise rnNoise = RNNoise();
-  PCMPlayer player1 = PCMPlayer(sampleRateInHz: 8000);
-  PCMPlayer player2 = PCMPlayer(sampleRateInHz: 8000);
+  PCMPlayer player1 = PCMPlayer(sampleRateInHz: 48000);
+  PCMPlayer player2 = PCMPlayer(sampleRateInHz: 48000);
 
   List<Uint8List> rnnoiseAudio = [];
   List<Uint8List> sourceAudio = [];
@@ -63,6 +63,8 @@ class _MyAppState extends State<MyApp> {
 
                                 sourceAudio.add(data);
                                 rnnoiseAudio.add(newData);
+                              } else {
+                                rnNoise.release();
                               }
                             },
                             preFrameSize: 960);

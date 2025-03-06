@@ -29,11 +29,10 @@
 #ifndef VEC_H
 #define VEC_H
 
-
+#include "opus_types.h"
 #include "common.h"
 #include <math.h>
 #include "arch.h"
-
 
 
 #if defined(__AVX__) || defined(__SSE2__)
@@ -41,8 +40,6 @@
 #elif (defined(__ARM_NEON__) || defined(__ARM_NEON)) && !defined(DISABLE_NEON)
 #include "vec_neon.h"
 #else
-
-#include "os_support.h"
 
 #define MAX_INPUTS (2048)
 

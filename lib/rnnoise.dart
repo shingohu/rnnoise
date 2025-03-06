@@ -32,6 +32,8 @@ class RNNoise {
 
   bool get _hasInit => _handle != null && _handle != _nullptr;
 
+  ///每次处理的帧数
+  ///模型支持是48k采样率，所以每次处理480帧,但是模型每次需要输入2包数据,所有每次的长度是960帧
   int getFrameSize() {
     return _bindings.get_frame_size();
   }
@@ -46,7 +48,7 @@ class RNNoise {
     if (!_hasInit) {
       return data;
     }
-    int frameSize = getFrameSize() * 2;
+    int frameSize = getFrameSize();
 
     if (data.length < frameSize) {
       return data;

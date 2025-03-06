@@ -34,7 +34,7 @@ dependencies:
   pcm:
     git:
       url: https://github.com/shingohu/pcm.git
-      ref: 0.3.8
+      ref: 1.0.5
 
   rnnoise:
     # When depending on this package from a real application you should use:
@@ -44,13 +44,13 @@ dependencies:
     # the parent directory to use the current plugin's version.
     path: ../
 
+  resample:
+    path: resample
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

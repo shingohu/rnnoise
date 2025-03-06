@@ -64,3 +64,8 @@ set_target_properties(rnnoise PROPERTIES
 
 
 target_compile_definitions(rnnoise PUBLIC DART_SHARED_LIB)
+
+if (ANDROID)
+  # Support Android 15 16k page size.
+  target_link_options(rnnoise PRIVATE "-Wl,-z,max-page-size=16384")
+endif()

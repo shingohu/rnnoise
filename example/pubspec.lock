@@ -103,13 +103,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.8"
-  resample:
-    dependency: "direct main"
-    description:
-      path: resample
-      relative: true
-    source: path
-    version: "0.0.1"
   rnnoise:
     dependency: "direct main"
     description:

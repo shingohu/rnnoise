@@ -27,56 +27,330 @@ class RnnoiseBindings {
           lookup)
       : _lookup = lookup;
 
-  int get_frame_size() {
-    return _get_frame_size();
+  /// Return the size of DenoiseState
+  int rnnoise_get_size() {
+    return _rnnoise_get_size();
   }
 
-  late final _get_frame_sizePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('get_frame_size');
-  late final _get_frame_size = _get_frame_sizePtr.asFunction<int Function()>();
+  late final _rnnoise_get_sizePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('rnnoise_get_size');
+  late final _rnnoise_get_size =
+      _rnnoise_get_sizePtr.asFunction<int Function()>();
 
-  void process_frame(
-    ffi.Pointer<ffi.Void> handle,
+  /// Return the number of samples processed by rnnoise_process_frame at a time
+  int rnnoise_get_frame_size() {
+    return _rnnoise_get_frame_size();
+  }
+
+  late final _rnnoise_get_frame_sizePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('rnnoise_get_frame_size');
+  late final _rnnoise_get_frame_size =
+      _rnnoise_get_frame_sizePtr.asFunction<int Function()>();
+
+  /// Initializes a pre-allocated DenoiseState
+  ///
+  /// If model is NULL the default model is used.
+  ///
+  /// See: rnnoise_create() and rnnoise_model_from_file()
+  int rnnoise_init(
+    ffi.Pointer<DenoiseState> st,
+    ffi.Pointer<RNNModel> model,
+  ) {
+    return _rnnoise_init(
+      st,
+      model,
+    );
+  }
+
+  late final _rnnoise_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<DenoiseState>,
+              ffi.Pointer<RNNModel>)>>('rnnoise_init');
+  late final _rnnoise_init = _rnnoise_initPtr.asFunction<
+      int Function(ffi.Pointer<DenoiseState>, ffi.Pointer<RNNModel>)>();
+
+  /// Allocate and initialize a DenoiseState
+  ///
+  /// If model is NULL the default model is used.
+  ///
+  /// The returned pointer MUST be freed with rnnoise_destroy().
+  ffi.Pointer<DenoiseState> rnnoise_create(
+    ffi.Pointer<RNNModel> model,
+  ) {
+    return _rnnoise_create(
+      model,
+    );
+  }
+
+  late final _rnnoise_createPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<DenoiseState> Function(
+              ffi.Pointer<RNNModel>)>>('rnnoise_create');
+  late final _rnnoise_create = _rnnoise_createPtr
+      .asFunction<ffi.Pointer<DenoiseState> Function(ffi.Pointer<RNNModel>)>();
+
+  /// Free a DenoiseState produced by rnnoise_create.
+  ///
+  /// The optional custom model must be freed by rnnoise_model_free() after.
+  void rnnoise_destroy(
+    ffi.Pointer<DenoiseState> st,
+  ) {
+    return _rnnoise_destroy(
+      st,
+    );
+  }
+
+  late final _rnnoise_destroyPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<DenoiseState>)>>(
+          'rnnoise_destroy');
+  late final _rnnoise_destroy = _rnnoise_destroyPtr
+      .asFunction<void Function(ffi.Pointer<DenoiseState>)>();
+
+  /// Denoise a frame of samples
+  ///
+  /// in and out must be at least rnnoise_get_frame_size() large.
+  double rnnoise_process_frame(
+    ffi.Pointer<DenoiseState> st,
     ffi.Pointer<ffi.Float> out,
     ffi.Pointer<ffi.Float> in1,
-    int inSize,
   ) {
-    return _process_frame(
-      handle,
+    return _rnnoise_process_frame(
+      st,
       out,
       in1,
-      inSize,
     );
   }
 
-  late final _process_framePtr = _lookup<
+  late final _rnnoise_process_framePtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Float>,
-              ffi.Pointer<ffi.Float>, ffi.Int64)>>('process_frame');
-  late final _process_frame = _process_framePtr.asFunction<
-      void Function(ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Float>,
-          ffi.Pointer<ffi.Float>, int)>();
+          ffi.Float Function(ffi.Pointer<DenoiseState>, ffi.Pointer<ffi.Float>,
+              ffi.Pointer<ffi.Float>)>>('rnnoise_process_frame');
+  late final _rnnoise_process_frame = _rnnoise_process_framePtr.asFunction<
+      double Function(ffi.Pointer<DenoiseState>, ffi.Pointer<ffi.Float>,
+          ffi.Pointer<ffi.Float>)>();
 
-  ffi.Pointer<ffi.Void> create() {
-    return _create();
-  }
-
-  late final _createPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function()>>('create');
-  late final _create =
-      _createPtr.asFunction<ffi.Pointer<ffi.Void> Function()>();
-
-  void destroy(
-    ffi.Pointer<ffi.Void> handle,
+  /// Load a model from a memory buffer
+  ///
+  /// It must be deallocated with rnnoise_model_free() and the buffer must remain
+  /// valid until after the returned object is destroyed.
+  ffi.Pointer<RNNModel> rnnoise_model_from_buffer(
+    ffi.Pointer<ffi.Void> ptr,
+    int len,
   ) {
-    return _destroy(
-      handle,
+    return _rnnoise_model_from_buffer(
+      ptr,
+      len,
     );
   }
 
-  late final _destroyPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
-          'destroy');
-  late final _destroy =
-      _destroyPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+  late final _rnnoise_model_from_bufferPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<RNNModel> Function(
+              ffi.Pointer<ffi.Void>, ffi.Int)>>('rnnoise_model_from_buffer');
+  late final _rnnoise_model_from_buffer = _rnnoise_model_from_bufferPtr
+      .asFunction<ffi.Pointer<RNNModel> Function(ffi.Pointer<ffi.Void>, int)>();
+
+  /// Load a model from a file
+  ///
+  /// It must be deallocated with rnnoise_model_free() and the file must not be
+  /// closed until the returned object is destroyed.
+  ffi.Pointer<RNNModel> rnnoise_model_from_file(
+    ffi.Pointer<FILE> f,
+  ) {
+    return _rnnoise_model_from_file(
+      f,
+    );
+  }
+
+  late final _rnnoise_model_from_filePtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Pointer<RNNModel> Function(ffi.Pointer<FILE>)>>(
+      'rnnoise_model_from_file');
+  late final _rnnoise_model_from_file = _rnnoise_model_from_filePtr
+      .asFunction<ffi.Pointer<RNNModel> Function(ffi.Pointer<FILE>)>();
+
+  /// Load a model from a file name
+  ///
+  /// It must be deallocated with rnnoise_model_free()
+  ffi.Pointer<RNNModel> rnnoise_model_from_filename(
+    ffi.Pointer<ffi.Char> filename,
+  ) {
+    return _rnnoise_model_from_filename(
+      filename,
+    );
+  }
+
+  late final _rnnoise_model_from_filenamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<RNNModel> Function(
+              ffi.Pointer<ffi.Char>)>>('rnnoise_model_from_filename');
+  late final _rnnoise_model_from_filename = _rnnoise_model_from_filenamePtr
+      .asFunction<ffi.Pointer<RNNModel> Function(ffi.Pointer<ffi.Char>)>();
+
+  /// Free a custom model
+  ///
+  /// It must be called after all the DenoiseStates referring to it are freed.
+  void rnnoise_model_free(
+    ffi.Pointer<RNNModel> model,
+  ) {
+    return _rnnoise_model_free(
+      model,
+    );
+  }
+
+  late final _rnnoise_model_freePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<RNNModel>)>>(
+          'rnnoise_model_free');
+  late final _rnnoise_model_free =
+      _rnnoise_model_freePtr.asFunction<void Function(ffi.Pointer<RNNModel>)>();
 }
+
+final class DenoiseState extends ffi.Opaque {}
+
+final class RNNModel extends ffi.Opaque {}
+
+/// stdio state variables.
+///
+/// The following always hold:
+///
+/// if (_flags&(__SLBF|__SWR)) == (__SLBF|__SWR),
+/// _lbfsize is -_bf._size, else _lbfsize is 0
+/// if _flags&__SRD, _w is 0
+/// if _flags&__SWR, _r is 0
+///
+/// This ensures that the getc and putc macros (or inline functions) never
+/// try to write or read from a file that is in `read' or `write' mode.
+/// (Moreover, they can, and do, automatically switch from read mode to
+/// write mode, and back, on "r+" and "w+" files.)
+///
+/// _lbfsize is used only to make the inline line-buffered output stream
+/// code as compact as possible.
+///
+/// _ub, _up, and _ur are used when ungetc() pushes back more characters
+/// than fit in the current _bf, or when ungetc() pushes back a character
+/// that does not match the previous one in _bf.  When this happens,
+/// _ub._base becomes non-nil (i.e., a stream has ungetc() data iff
+/// _ub._base!=NULL) and _up and _ur save the current values of _p and _r.
+///
+/// NB: see WARNING above before changing the layout of this structure!
+typedef FILE = __sFILE;
+
+/// stdio state variables.
+///
+/// The following always hold:
+///
+/// if (_flags&(__SLBF|__SWR)) == (__SLBF|__SWR),
+/// _lbfsize is -_bf._size, else _lbfsize is 0
+/// if _flags&__SRD, _w is 0
+/// if _flags&__SWR, _r is 0
+///
+/// This ensures that the getc and putc macros (or inline functions) never
+/// try to write or read from a file that is in `read' or `write' mode.
+/// (Moreover, they can, and do, automatically switch from read mode to
+/// write mode, and back, on "r+" and "w+" files.)
+///
+/// _lbfsize is used only to make the inline line-buffered output stream
+/// code as compact as possible.
+///
+/// _ub, _up, and _ur are used when ungetc() pushes back more characters
+/// than fit in the current _bf, or when ungetc() pushes back a character
+/// that does not match the previous one in _bf.  When this happens,
+/// _ub._base becomes non-nil (i.e., a stream has ungetc() data iff
+/// _ub._base!=NULL) and _up and _ur save the current values of _p and _r.
+///
+/// NB: see WARNING above before changing the layout of this structure!
+final class __sFILE extends ffi.Struct {
+  /// current position in (some) buffer
+  external ffi.Pointer<ffi.UnsignedChar> _p;
+
+  /// read space left for getc()
+  @ffi.Int()
+  external int _r;
+
+  /// write space left for putc()
+  @ffi.Int()
+  external int _w;
+
+  /// flags, below; this FILE is free if 0
+  @ffi.Short()
+  external int _flags;
+
+  /// fileno, if Unix descriptor, else -1
+  @ffi.Short()
+  external int _file;
+
+  /// the buffer (at least 1 byte, if !NULL)
+  external __sbuf _bf;
+
+  /// 0 or -_bf._size, for inline putc
+  @ffi.Int()
+  external int _lbfsize;
+
+  /// cookie passed to io functions
+  external ffi.Pointer<ffi.Void> _cookie;
+
+  external ffi
+      .Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>
+      _close;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Int)>> _read;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          fpos_t Function(ffi.Pointer<ffi.Void>, fpos_t, ffi.Int)>> _seek;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Int)>> _write;
+
+  /// ungetc buffer
+  external __sbuf _ub;
+
+  /// additions to FILE to not break ABI
+  external ffi.Pointer<__sFILEX> _extra;
+
+  /// saved _r when _r is counting ungetc data
+  @ffi.Int()
+  external int _ur;
+
+  /// guarantee an ungetc() buffer
+  @ffi.Array.multi([3])
+  external ffi.Array<ffi.UnsignedChar> _ubuf;
+
+  /// guarantee a getc() buffer
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.UnsignedChar> _nbuf;
+
+  /// buffer for fgetln()
+  external __sbuf _lb;
+
+  /// stat.st_blksize (may be != _bf._size)
+  @ffi.Int()
+  external int _blksize;
+
+  /// current lseek offset (see WARNING)
+  @fpos_t()
+  external int _offset;
+}
+
+/// stdio buffers
+final class __sbuf extends ffi.Struct {
+  external ffi.Pointer<ffi.UnsignedChar> _base;
+
+  @ffi.Int()
+  external int _size;
+}
+
+typedef fpos_t = __darwin_off_t;
+typedef __darwin_off_t = __int64_t;
+typedef __int64_t = ffi.LongLong;
+typedef Dart__int64_t = int;
+
+/// hold a buncha junk that would grow the ABI
+final class __sFILEX extends ffi.Opaque {}
+
+const int RNNOISE_H = 1;

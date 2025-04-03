@@ -21,7 +21,6 @@ set(RN_NOISE_SRC
         rnnoise/src/nnet_default.c
         rnnoise/src/rnn.c
         rnnoise/src/rnnoise_tables.c
-        rnnoise/src/dump_features.c
         rnnoise/src/denoise.c
         rnnoise/src/kiss_fft.c
         rnnoise/src/parse_lpcnet_weights.c

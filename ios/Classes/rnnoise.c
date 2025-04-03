@@ -2,7 +2,6 @@
 // See the comment in ../rnnoise.podspec for more information.
 #include "../../src/rnnoise/src/celt_lpc.c"
 #include "../../src/rnnoise/src/denoise.c"
-#include "../../src/rnnoise/src/dump_features.c"
 #include "../../src/rnnoise/src/kiss_fft.c"
 #include "../../src/rnnoise/src/nnet.c"
 #include "../../src/rnnoise/src/nnet_default.c"

@@ -72,11 +72,6 @@ class RNNoise {
     });
   }
 
-  Uint8List process16BitPCM(Uint8List data) {
-    // return Uint8List.fromList(processList);
-    return data;
-  }
-
   ///释放
   void release() {
     if (_hasInit) {

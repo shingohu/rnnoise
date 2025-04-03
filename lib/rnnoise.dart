@@ -40,41 +40,44 @@ class RNNoise {
 
   void create() {
     if (!_hasInit) {
-      ffi.using((arena) {
-        Pointer<RNNModel> model = nullptr;
-        _handle = _bindings.rnnoise_create(model);
-      });
+      Pointer<RNNModel> model = nullptr;
+      _handle = _bindings.rnnoise_create(model);
     }
   }
 
-  Float32List process(Float32List data) {
+  ///[data]16位PCM数据,需要处理的帧数为480帧,所以需要960个字节
+  Uint8List process(Uint8List data) {
     return ffi.using((arena) {
-      Float32List input = data;
-      int floatLength = input.length;
-      final inputPtr = arena<Float>(floatLength);
-      inputPtr.asTypedList(floatLength).setAll(0, input);
+      int size = getFrameSize();
+      int processSize = 0;
+      List<int> processList = [];
+      for (int i = 0; i < data.length; i += size * 2) {
+        processSize += size * 2;
 
-      final outPtr = arena<Float>(floatLength);
-      _bindings.rnnoise_process_frame(_handle!, outPtr, inputPtr);
-      return outPtr.asTypedList(floatLength);
+        ///这里不知道为什么_bytesToFloat & _floatToBytes不能放到外面处理,在iOS&MacOS上导致编码后的音频有问题
+        Float32List input = _bytesToFloat(data.sublist(i, i + size * 2));
+        int floatLength = input.length;
+        final inputPtr = arena<Float>(floatLength);
+        inputPtr.asTypedList(floatLength).setAll(0, input);
+
+        final outPtr = arena<Float>(floatLength);
+        _bindings.rnnoise_process_frame(_handle!, outPtr, inputPtr);
+        Float32List newData = outPtr.asTypedList(floatLength);
+
+        Uint8List newBytes = _floatToBytes(newData);
+        processList.addAll(newBytes);
+      }
+
+      ///不能处理的部分
+      processList.addAll(data.sublist(processSize));
+
+      return Uint8List.fromList(processList);
     });
   }
 
   Uint8List process16BitPCM(Uint8List data) {
-    int size = getFrameSize();
-    int processSize = 0;
-    List<int> processList = [];
-    for (int i = 0; i < data.length; i += size * 2) {
-      processSize += size * 2;
-      Float32List float = _bytesToFloat(data.sublist(i, i + size * 2));
-      Float32List newData = process(float);
-      Uint8List newBytes = _floatToBytes(newData);
-      processList.addAll(newBytes);
-    }
-
-    ///不能处理的部分
-    processList.addAll(data.sublist(processSize));
-    return Uint8List.fromList(processList);
+    // return Uint8List.fromList(processList);
+    return data;
   }
 
   ///释放
@@ -85,7 +88,7 @@ class RNNoise {
     }
   }
 
-  static Float32List _bytesToFloat(Uint8List bytes) {
+  Float32List _bytesToFloat(Uint8List bytes) {
     Float32List float = Float32List(bytes.length ~/ 2);
     for (int i = 0; i < float.length; i++) {
       int x;
@@ -99,7 +102,7 @@ class RNNoise {
     return float;
   }
 
-  static Uint8List _floatToBytes(Float32List input) {
+  Uint8List _floatToBytes(Float32List input) {
     Uint8List bytes = Uint8List(input.length * 2);
     for (int i = 0; i < input.length; i++) {
       int x = input[i].toInt();

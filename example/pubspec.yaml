@@ -31,12 +31,17 @@ dependencies:
   flutter:
     sdk: flutter
 
-
+  #本地化
+  flutter_localization: any
+  path_provider: any
   pcm:
     git:
       url: https://github.com/shingohu/pcm.git
       ref: 1.0.5
 
+  #日志查看和分享
+  open_filex: any
+  share_plus: ^10.0.2
   rnnoise:
     # When depending on this package from a real application you should use:
     #   rnnoise: ^x.y.z

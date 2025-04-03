@@ -1,0 +1,2 @@
+/Users/shingo/develop/hujie/rnnoise/example/android/app/.cxx/Debug/2a3s4b5m/x86_64/CMakeFiles/edit_cache.dir
+/Users/shingo/develop/hujie/rnnoise/example/android/app/.cxx/Debug/2a3s4b5m/x86_64/CMakeFiles/rebuild_cache.dir

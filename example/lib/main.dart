@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pcm/pcm.dart';
 import 'package:rnnoise/rnnoise.dart';
+import 'package:rnnoise_example/uu_log.dart';
 
 void main() {
   runApp(const MyApp());
@@ -80,19 +81,25 @@ class _MyAppState extends State<MyApp> {
                       child: Text("结束录音")),
                   TextButton(
                       onPressed: () async {
+                        List<int> all = [];
                         player1.play();
                         sourceAudio.forEach((data) {
                           player1.feed(data);
+                          all.addAll(data.toList());
                         });
+                        UULog.writeBytes(all, name: "48k.pcm");
                         sourceAudio.clear();
                       },
                       child: Text("播放原音")),
                   TextButton(
                       onPressed: () async {
                         player2.play();
+                        List<int> all = [];
                         rnnoiseAudio.forEach((data) {
                           player2.feed(data);
+                          all.addAll(data.toList());
                         });
+                        UULog.writeBytes(all, name: "48k_r.pcm");
                         rnnoiseAudio.clear();
                       },
                       child: Text("播放降噪后")),

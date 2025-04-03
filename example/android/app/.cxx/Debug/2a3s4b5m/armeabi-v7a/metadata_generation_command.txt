@@ -1,0 +1,20 @@
+                        -H/Users/shingo/develop/SDK/flutter-3.29.x/packages/flutter_tools/gradle/src/main/groovy
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=23
+-DANDROID_PLATFORM=android-23
+-DANDROID_ABI=armeabi-v7a
+-DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a
+-DANDROID_NDK=/Users/shingo/Library/Android/sdk/ndk/26.3.11579264
+-DCMAKE_ANDROID_NDK=/Users/shingo/Library/Android/sdk/ndk/26.3.11579264
+-DCMAKE_TOOLCHAIN_FILE=/Users/shingo/Library/Android/sdk/ndk/26.3.11579264/build/cmake/android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=/Users/shingo/Library/Android/sdk/cmake/3.22.1/bin/ninja
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/shingo/develop/hujie/rnnoise/example/build/app/intermediates/cxx/Debug/2a3s4b5m/obj/armeabi-v7a
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/Users/shingo/develop/hujie/rnnoise/example/build/app/intermediates/cxx/Debug/2a3s4b5m/obj/armeabi-v7a
+-DCMAKE_BUILD_TYPE=Debug
+-B/Users/shingo/develop/hujie/rnnoise/example/android/app/.cxx/Debug/2a3s4b5m/armeabi-v7a
+-GNinja
+-Wno-dev
+--no-warn-unused-cli
+                        Build command args: []
+                        Version: 2

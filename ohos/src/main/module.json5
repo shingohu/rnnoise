@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "rnnoise",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet",
+    ]
+  }
+}

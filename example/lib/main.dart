@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pcm/pcm.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rnnoise/rnnoise.dart';
-import 'package:rnnoise_example/uu_log.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,15 +18,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   RNNoise rnNoise = RNNoise();
-  PCMPlayer player1 = PCMPlayer(sampleRateInHz: 48000);
-  PCMPlayer player2 = PCMPlayer(sampleRateInHz: 48000);
-
-  List<Uint8List> rnnoiseAudio = [];
-  List<Uint8List> sourceAudio = [];
 
   @override
   void initState() {
-    PCMRecorder.requestRecordPermission();
     super.initState();
   }
 
@@ -34,7 +29,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('RNNoise Packages'),
+          title: const Text('RNNoise降噪'),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -42,72 +37,10 @@ class _MyAppState extends State<MyApp> {
               child: Column(
                 children: [
                   TextButton(
-                      onPressed: () {
-                        print(RNNoise().getFrameSize());
-                      },
-                      child: Text("测试")),
-                  TextButton(
-                      onPressed: () async {
-                        rnNoise.release();
-                        rnNoise.create();
-                        rnnoiseAudio.clear();
-                        sourceAudio.clear();
-                        await player1.stop();
-                        await player2.stop();
-                        PCMRecorder.start(
-                          sampleRateInHz: 48000,
-                          preFrameSize: 960,
-                          onData: (data) {
-                            if (data != null) {
-                              int start = DateTime.now().millisecondsSinceEpoch;
-                              Uint8List newData = rnNoise.process(data);
-                              print(
-                                  "耗时${DateTime.now().millisecondsSinceEpoch - start}");
-
-                              sourceAudio.add(data);
-                              rnnoiseAudio.add(newData);
-                            } else {
-                              rnNoise.release();
-                            }
-                          },
-                        );
-                      },
-                      child: Text("开始录音")),
-                  TextButton(
-                      onPressed: () async {
-                        print("结束录音");
-                        await PCMRecorder.stop();
-                      },
-                      child: Text("结束录音")),
-                  TextButton(
-                      onPressed: () async {
-                        List<int> all = [];
-                        player1.play();
-                        sourceAudio.forEach((data) {
-                          player1.feed(data);
-                          all.addAll(data.toList());
-                        });
-                        UULog.writeBytes(all, name: "48k.pcm");
-                        sourceAudio.clear();
-                      },
-                      child: Text("播放原音")),
-                  TextButton(
-                      onPressed: () async {
-                        player2.play();
-                        List<int> all = [];
-                        rnnoiseAudio.forEach((data) {
-                          player2.feed(data);
-                          all.addAll(data.toList());
-                        });
-                        UULog.writeBytes(all, name: "48k_r.pcm");
-                        rnnoiseAudio.clear();
-                      },
-                      child: Text("播放降噪后")),
-                  TextButton(
                       onPressed: () async {
                         readAndNoise();
                       },
-                      child: Text("测试")),
+                      child: Text("48kPCM降噪处理")),
                 ],
               )),
         ),
@@ -120,15 +53,28 @@ class _MyAppState extends State<MyApp> {
   void readAndNoise() async {
     rnNoise.release();
     rnNoise.create();
-    await player1.stop();
-    uint8list ??=
-        (await rootBundle.load("assets/48K.pcm")).buffer.asUint8List();
+    uint8list ??= (await rootBundle.load("assets/48K.pcm")).buffer.asUint8List();
     List<int> list = [];
     for (int i = 0; i < uint8list!.length; i += 960) {
       Uint8List newData = rnNoise.process(uint8list!.sublist(i, i + 960));
       list.addAll(newData.toList());
     }
-    player1.play();
-    player1.feed(Uint8List.fromList(list));
+    File? file = await _createCacheAudioFile("48k_r");
+    if (file != null) {
+      file.writeAsBytes(list);
+      print(file.path);
+    }
+  }
+
+  ///创建PCM缓存
+  Future<File?> _createCacheAudioFile(String prefix) async {
+    DateTime time = DateTime.now();
+    String fileName = prefix + "_" + time.millisecondsSinceEpoch.toString() + ".pcm";
+    String? path = (await getApplicationDocumentsDirectory()).path + '/audio';
+    File file = File(path + "/" + fileName);
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
+    return file;
   }
 }

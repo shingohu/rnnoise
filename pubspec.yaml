@@ -11,12 +11,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  ffi: ^2.1.0
-  plugin_platform_interface: ^2.0.2
+  ffi: ^2.1.4
+  plugin_platform_interface: ^2.1.8
 
 dev_dependencies:
-  ffi: ^2.1.0
-  ffigen: ^13.0.0
+  ffi: ^2.1.4
+  ffigen: ^19.1.0
 
 
 # For information on the generic Dart part of this file, see the
@@ -43,6 +43,8 @@ flutter:
       ios:
         ffiPlugin: true
       macos:
+        ffiPlugin: true
+      ohos:
         ffiPlugin: true
 
   # To add assets to your plugin package, add an assets section, like this:

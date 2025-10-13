@@ -16,6 +16,9 @@ final DynamicLibrary _dylib = () {
   if (Platform.isAndroid) {
     return DynamicLibrary.open('lib$_libName.so');
   }
+  if (Platform.operatingSystem == "ohos") {
+    return DynamicLibrary.open('lib$_libName.so');
+  }
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
 }();
 

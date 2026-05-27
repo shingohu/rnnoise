@@ -10,4 +10,5 @@
 #include "../../src/rnnoise/src/rnn.c"
 #include "../../src/rnnoise/src/rnnoise_data.c"
 #include "../../src/rnnoise/src/rnnoise_tables.c"
+#include "../../src/rnnoise/src/rnnoise_bridge.c"
 

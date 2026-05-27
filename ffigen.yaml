@@ -1,15 +1,15 @@
 # Run with `dart run ffigen --config ffigen.yaml`.
 name: RnnoiseBindings
 description: |
-  Bindings for `src/rnnoise.h`.
+  Bindings for `src/rnnoise/src/rnnoise.h`.
 
   Regenerate bindings with `dart run ffigen --config ffigen.yaml`.
 output: 'lib/rnnoise_bindings_generated.dart'
 headers:
   entry-points:
-    - 'src/rnnoise.h'
+    - 'src/rnnoise/src/rnnoise.h'
   include-directives:
-    - 'src/rnnoise.h'
+    - 'src/rnnoise/src/rnnoise.h'
 preamble: |
   // ignore_for_file: always_specify_types
   // ignore_for_file: camel_case_types

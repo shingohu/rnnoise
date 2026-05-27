@@ -129,6 +129,30 @@ class RnnoiseBindings {
       double Function(ffi.Pointer<DenoiseState>, ffi.Pointer<ffi.Float>,
           ffi.Pointer<ffi.Float>)>();
 
+  /// Denoise a frame of int16 PCM samples
+  ///
+  /// Convenience wrapper that converts int16 to float internally.
+  void rnnoise_process_frame_int16(
+    ffi.Pointer<DenoiseState> st,
+    ffi.Pointer<ffi.Int16> out,
+    ffi.Pointer<ffi.Int16> in1,
+  ) {
+    return _rnnoise_process_frame_int16(
+      st,
+      out,
+      in1,
+    );
+  }
+
+  late final _rnnoise_process_frame_int16Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<DenoiseState>, ffi.Pointer<ffi.Int16>,
+              ffi.Pointer<ffi.Int16>)>>('rnnoise_process_frame_int16');
+  late final _rnnoise_process_frame_int16 = _rnnoise_process_frame_int16Ptr
+      .asFunction<
+          void Function(ffi.Pointer<DenoiseState>, ffi.Pointer<ffi.Int16>,
+              ffi.Pointer<ffi.Int16>)>();
+
   /// Load a model from a memory buffer
   ///
   /// It must be deallocated with rnnoise_model_free() and the buffer must remain

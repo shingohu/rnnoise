@@ -28,6 +28,7 @@
 #ifndef RNNOISE_H
 #define RNNOISE_H 1
 
+#include <stdint.h>
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -92,6 +93,14 @@ RNNOISE_EXPORT void rnnoise_destroy(DenoiseState *st);
  * in and out must be at least rnnoise_get_frame_size() large.
  */
 RNNOISE_EXPORT float rnnoise_process_frame(DenoiseState *st, float *out, const float *in);
+
+/**
+ * Denoise a frame of int16 PCM samples (480 samples)
+ *
+ * Convenience wrapper that converts int16 to float, calls rnnoise_process_frame,
+ * and converts back. Avoids FFI-side float conversion overhead.
+ */
+RNNOISE_EXPORT void rnnoise_process_frame_int16(DenoiseState *st, int16_t *out, const int16_t *in);
 
 /**
  * Load a model from a memory buffer

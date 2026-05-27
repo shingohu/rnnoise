@@ -24,7 +24,7 @@ set(RN_NOISE_SRC
         rnnoise/src/denoise.c
         rnnoise/src/kiss_fft.c
         rnnoise/src/parse_lpcnet_weights.c
-        rnnoise/src/rnnoise_data.c
+        rnnoise/src/rnnoise_data_little.c
         rnnoise/src/nnet.c
         rnnoise/src/pitch.c
         rnnoise/src/rnnoise_bridge.c

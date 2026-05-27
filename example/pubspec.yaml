@@ -45,10 +45,6 @@ dependencies:
 
 
 dependency_overrides:
-  path_provider:
-    git:
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
-      path: "packages/path_provider/path_provider"
 
 dev_dependencies:
 

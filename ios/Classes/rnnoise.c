@@ -8,7 +8,7 @@
 #include "../../src/rnnoise/src/parse_lpcnet_weights.c"
 #include "../../src/rnnoise/src/pitch.c"
 #include "../../src/rnnoise/src/rnn.c"
-#include "../../src/rnnoise/src/rnnoise_data.c"
+#include "../../src/rnnoise/src/rnnoise_data_little.c"
 #include "../../src/rnnoise/src/rnnoise_tables.c"
 #include "../../src/rnnoise/src/rnnoise_bridge.c"
 

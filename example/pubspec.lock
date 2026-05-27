@@ -81,12 +81,11 @@ packages:
   path_provider:
     dependency: "direct main"
     description:
-      path: "packages/path_provider/path_provider"
-      ref: HEAD
-      resolved-ref: "35fb467533e174411a117b2a030c15d2a3a9687c"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
-    source: git
-    version: "2.1.0"
+      name: path_provider
+      sha256: "50c5dd5b6e1aaf6fb3a78b33f6aa3afca52bf903a8a5298f53101fdaee55bbcd"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.5"
   path_provider_android:
     dependency: transitive
     description:
@@ -110,15 +109,6 @@ packages:
       sha256: f7a1fe3a634fe7734c8d3f2766ad746ae2a2884abe22e241a8b301bf5cac3279
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.2.1"
-  path_provider_ohos:
-    dependency: transitive
-    description:
-      path: "packages/path_provider/path_provider_ohos"
-      ref: HEAD
-      resolved-ref: "35fb467533e174411a117b2a030c15d2a3a9687c"
-      url: "https://gitee.com/openharmony-sig/flutter_packages.git"
-    source: git
     version: "2.2.1"
   path_provider_platform_interface:
     dependency: transitive

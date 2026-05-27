@@ -1,28 +1,29 @@
 PODS:
   - FlutterMacOS (1.0.0)
-  - pcm (0.0.1):
+  - path_provider_foundation (0.0.1):
+    - Flutter
     - FlutterMacOS
   - rnnoise (0.0.1):
     - FlutterMacOS
 
 DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
-  - pcm (from `Flutter/ephemeral/.symlinks/plugins/pcm/macos`)
+  - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - rnnoise (from `Flutter/ephemeral/.symlinks/plugins/rnnoise/macos`)
 
 EXTERNAL SOURCES:
   FlutterMacOS:
     :path: Flutter/ephemeral
-  pcm:
-    :path: Flutter/ephemeral/.symlinks/plugins/pcm/macos
+  path_provider_foundation:
+    :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
   rnnoise:
     :path: Flutter/ephemeral/.symlinks/plugins/rnnoise/macos
 
 SPEC CHECKSUMS:
-  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  pcm: 07b7713d1745ffa1fd12feab2c352ea6d9465155
-  rnnoise: 487c6fe39017f46c4edb8385ee58ff3e5296e482
+  FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  rnnoise: da5cf1270768522f40174bc6210606a3f508064b
 
-PODFILE CHECKSUM: 236401fc2c932af29a9fcf0e97baeeb2d750d367
+PODFILE CHECKSUM: 9ebaf0ce3d369aaa26a9ea0e159195ed94724cf3
 
 COCOAPODS: 1.16.2

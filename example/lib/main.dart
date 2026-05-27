@@ -55,9 +55,12 @@ class _MyAppState extends State<MyApp> {
     rnNoise.create();
     uint8list ??= (await rootBundle.load("assets/48K.pcm")).buffer.asUint8List();
     List<int> list = [];
-    for (int i = 0; i < uint8list!.length; i += 960) {
-      Uint8List newData = rnNoise.process(uint8list!.sublist(i, i + 960));
+    for (int i = 0; i < uint8list!.length; i += 960 * 4) {
+      Stopwatch stopwatch = Stopwatch()..start();
+      Uint8List newData = rnNoise.process(uint8list!.sublist(i, i + 960 * 4));
       list.addAll(newData.toList());
+      stopwatch.stop();
+      print("耗时${stopwatch.elapsedMilliseconds}");
     }
     File? file = await _createCacheAudioFile("48k_r");
     if (file != null) {

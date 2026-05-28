@@ -38,7 +38,7 @@ class RNNoise {
     return _bindings.rnnoise_get_frame_size();
   }
 
-  void create() {
+  void init() {
     if (!_hasInit) {
       Pointer<RNNModel> model = nullptr;
       _handle = _bindings.rnnoise_create(model);
@@ -46,14 +46,25 @@ class RNNoise {
   }
 
   void _ensureBuffer(int totalSamples) {
-    if (totalSamples > _bufSamples) {
-      if (_inPtr != null) {
-        calloc.free(_inPtr!);
-        calloc.free(_outPtr!);
-      }
-      _inPtr = calloc<Int16>(totalSamples);
-      _outPtr = calloc<Int16>(totalSamples);
-      _bufSamples = totalSamples;
+    if (totalSamples == _bufSamples && _inPtr != null) {
+      return;
+    }
+    if (_inPtr != null) {
+      malloc.free(_inPtr!);
+      malloc.free(_outPtr!);
+    }
+    _inPtr = malloc<Int16>(totalSamples);
+    _outPtr = malloc<Int16>(totalSamples);
+    _bufSamples = totalSamples;
+  }
+
+  void freeBuffer() {
+    if (_inPtr != null) {
+      malloc.free(_inPtr!);
+      malloc.free(_outPtr!);
+      _inPtr = null;
+      _outPtr = null;
+      _bufSamples = 0;
     }
   }
 
@@ -75,10 +86,7 @@ class RNNoise {
     _ensureBuffer(processedSamples);
 
     // Bulk copy input bytes to native memory (single copy, not per-frame)
-    _inPtr!
-        .cast<Uint8>()
-        .asTypedList(processedBytes)
-        .setAll(0, data.sublist(0, processedBytes));
+    _inPtr!.cast<Uint8>().asTypedList(processedBytes).setAll(0, data.sublist(0, processedBytes));
 
     // Process each frame using native int16 wrapper (no float conversion in Dart)
     for (int i = 0; i < numFrames; i++) {
@@ -92,8 +100,7 @@ class RNNoise {
 
     // Build result: processed data + unprocessed remainder
     Uint8List result = Uint8List(data.length);
-    result.setAll(
-        0, _outPtr!.cast<Uint8>().asTypedList(processedBytes));
+    result.setAll(0, _outPtr!.cast<Uint8>().asTypedList(processedBytes));
     for (int i = processedBytes; i < data.length; i++) {
       result[i] = data[i];
     }
@@ -106,12 +113,6 @@ class RNNoise {
       _bindings.rnnoise_destroy(_handle!);
       _handle = null;
     }
-    if (_inPtr != null) {
-      calloc.free(_inPtr!);
-      calloc.free(_outPtr!);
-      _inPtr = null;
-      _outPtr = null;
-      _bufSamples = 0;
-    }
+    freeBuffer();
   }
 }

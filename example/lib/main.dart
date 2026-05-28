@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
 
   void readAndNoise() async {
     rnNoise.release();
-    rnNoise.create();
+    rnNoise.init();
     uint8list ??= (await rootBundle.load("assets/48K.pcm")).buffer.asUint8List();
     List<int> list = [];
     for (int i = 0; i < uint8list!.length; i += 960 * 4) {

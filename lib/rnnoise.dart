@@ -74,6 +74,9 @@ class RNNoise {
   /// multiple of frameSize*2 bytes (480 samples = 960 bytes per frame).
   /// Returns denoised PCM bytes of the same length.
   Uint8List process(Uint8List data) {
+    if (!_hasInit) {
+      return data;
+    }
     int frameSize = getFrameSize(); // 480 samples per frame
     int totalSamples = data.lengthInBytes ~/ 2;
     int numFrames = totalSamples ~/ frameSize;
